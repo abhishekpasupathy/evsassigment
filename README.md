@@ -3,7 +3,7 @@
 **Course:** Environmental Studies and E-Waste Management  
 **Course code:** BCS508 · **Semester:** V · **Branch:** ISE/CSE  
 **Selected environmental problem:** Forest Fire Detection  
-**Project type:** Student web prototype and proposed digital architecture
+**Project type:** Interactive browser-based operations prototype and proposed digital architecture
 
 ## 1. Problem statement
 
@@ -28,14 +28,40 @@ The proposed backend would combine image/model outputs with report location and 
 
 ### What this repository currently implements
 
-The published browser prototype includes:
-- Responsive ForestGuard landing page and system explanation.
-- Local image upload and preview.
-- An explicitly labelled **demo colour-pixel heuristic** to demonstrate an image-processing interaction.
-- Field report form with coordinate validation and browser-session storage.
-- Input → Processing → Output workflow and a conceptual architecture diagram.
+The repository now includes a functional browser-based demonstration with two pages:
 
-**Important limitation:** The current prototype does not contain a trained AI/ML model, a live satellite feed, a backend, a GIS map, automatic alerts or emergency dispatch. The image heuristic is not an actual fire classifier; sunlight, soil and other objects can produce similar colours. A low score does not prove that a scene is safe. Do not use this prototype for emergency decisions. For real incidents, contact the relevant local emergency or forest department directly.
+- **Landing page:** project overview, assignment workflow, system architecture and environmental benefits.
+- **Operations dashboard (`dashboard.html`):** incident queue, report creation, priority calculation, status updates, coordinate plot, weather-risk slider, image screening and CSV export.
+- **Persistent local data:** reports are stored in the browser's `localStorage`, so they remain after a refresh on the same browser/device.
+- **Sample data:** load three illustrative reports to demonstrate the queue, priorities and map pins.
+- **Filtering:** search incidents and filter by status or priority.
+- **Human review workflow:** move an incident between Open, Under review, Verified and False alarm.
+- **Image screening:** local pixel-colour heuristic with explicit limitations; no image is sent to a server.
+- **Responsive interface:** desktop and mobile layouts.
+
+### Implemented processing logic
+
+The prototype computes an illustrative priority score from the report type, temperature, wind speed and humidity. It assigns Low, Medium or High priority and supports human status updates. The weather panel independently calculates an educational fire-weather indicator from manually entered conditions. These scores are transparent rules for demonstrating the data flow, not scientifically calibrated fire-risk models.
+
+**Important limitation:** This is a complete interactive front-end prototype, not a production fire-detection service. It does not contain a trained AI/ML model, live satellite feed, live weather API, cloud database, multi-user authentication, real GIS basemap or automatic emergency dispatch. The image heuristic is not an actual fire classifier; sunlight, soil and other objects can produce similar colours. A low score does not prove that a scene is safe. Browser data is local to one device and is not shared with responders. Do not use this prototype for emergency decisions. For real incidents, contact the relevant local emergency or forest department directly.
+
+## 4.1 Run the full prototype
+
+1. Clone the repository.
+2. Open `index.html` for the project introduction.
+3. Select **Open live dashboard** or open `dashboard.html` directly.
+4. Select **Load sample data** to populate the incident queue and coordinate plot.
+5. Create a report with an observation type and optional latitude/longitude.
+6. Change report status in the queue, filter/search reports, and export the queue as CSV.
+7. Use the image screening panel to test a local image.
+
+No build step, API key, package installation or backend is required. Run from a local static server for the most consistent browser behaviour:
+
+```bash
+python3 -m http.server 8000
+```
+
+Open [http://localhost:8000](http://localhost:8000), then launch the dashboard.
 
 ## 4. Technologies used
 
@@ -43,7 +69,7 @@ The published browser prototype includes:
 |---|---|
 | HTML5 | Page structure, form and semantic content |
 | CSS3 | Responsive interface and visual design |
-| JavaScript | Image preview, demo pixel analysis, validation and session storage |
+| JavaScript | Incident queue, local persistence, heuristic priority scoring, image pixel analysis, filters and CSV export |
 | Computer Vision (proposed) | Detect visible fire and smoke in submitted images using a trained model |
 | Machine Learning (proposed) | Train and validate a classifier/detector on labelled fire, smoke and normal-scene data |
 | GIS (proposed) | Plot reports, analyse location context and identify possible hotspots |
@@ -85,7 +111,7 @@ Data quality, licences, geographic coverage and access terms must be checked bef
 - Human-reviewed incident status and an alert to authorised responders through an approved channel.
 
 ### What the demo does today
-The browser demo only performs steps 1 (basic local image loading) and a deliberately simple colour-pixel heuristic for demonstration. It can save a report in the current browser session. It does not execute the proposed ML/GIS/backend steps above.
+The browser demo performs local image loading and a deliberately simple colour-pixel heuristic. The dashboard validates and stores incident reports locally, calculates transparent rule-based priority scores, plots submitted coordinates schematically, supports human status updates and exports reports to CSV. It does not execute the proposed trained-ML, live-GIS, weather-feed or backend steps above.
 
 ## 7. Expected environmental benefits
 
@@ -132,19 +158,20 @@ Then visit [http://localhost:8000](http://localhost:8000).
 
 ## 10. Suggested demonstration
 
-1. Open the web page and explain that ForestGuard addresses forest fire detection.
-2. Scroll to **Check a forest image** and upload any test image.
-3. Run the demo screening. Explain that it is a colour heuristic only, not a trained AI model.
-4. Submit a sample field report with both coordinates or leave both blank.
-5. Explain the proposed production pipeline using the Input → Processing → Output section.
-6. Present the five expected environmental benefits and the limitations.
+1. Open the landing page and launch the operations dashboard.
+2. Click **Load sample data** to populate the dashboard.
+3. Demonstrate the priority metrics, coordinate plot, incident search and status changes.
+4. Create a new report and show that it persists after refreshing the page.
+5. Export the incident queue to CSV.
+6. Upload a photo and run the clearly labelled pixel-colour heuristic.
+7. Explain the proposed production pipeline, expected benefits and limitations.
 
 ## 11. Future scope
 
 - Train and evaluate an image model on a labelled, geographically diverse dataset.
 - Report precision, recall, F1-score and false-negative rates; prioritise reducing missed fires.
 - Integrate verified satellite hotspot feeds and local weather data.
-- Add a GIS dashboard with forest boundaries and report clustering.
+- Replace the schematic coordinate plot with a real GIS basemap and authorised forest-boundary layers.
 - Implement secure authentication, backend storage, audit logs and role-based access.
 - Add offline report capture and synchronisation for areas with weak connectivity.
 - Test with forest officials and conduct field validation before any operational deployment.
