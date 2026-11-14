@@ -8,10 +8,10 @@
 Forest fires destroy trees, vegetation and wildlife habitats, reduce biodiversity, and create smoke and air pollution. They can release greenhouse gases and spread rapidly when they are not detected and reported early. In remote forest regions, timely observation and accurate location details can be difficult. A digital reporting and image-screening system can help bring possible incidents to the attention of authorised personnel sooner, allowing them to verify the situation and decide on an appropriate response.
 
 ## Proposed Digital Solution
-ForestGuard is a web-based forest-fire observation and early-warning concept. It accepts forest photographs and field incident reports containing the observation type, time and optional GPS coordinates. In the proposed full system, a computer-vision model trained on labelled fire, smoke and normal forest images analyses photographs. The result is combined with location, weather and satellite hotspot context to prioritise possible incidents in a dashboard for human verification. The current repository contains a working front-end prototype with local image preview, a clearly labelled colour-pixel demo heuristic, coordinate-validated incident reporting and a system workflow. It does not yet contain a trained ML model, live data feed, backend or automatic emergency alert.
+ForestGuard is a web-based forest-fire observation and early-warning concept. It accepts forest photographs and field incident reports containing the observation type, time and optional GPS coordinates. In the proposed full system, a computer-vision model trained on labelled fire, smoke and normal forest images analyses photographs. The result is combined with location, weather and satellite hotspot context to prioritise possible incidents in a dashboard for human verification. The repository contains an interactive browser prototype with an operations dashboard, persistent local incident queue, report creation, rule-based priority scores using incident type and manually entered weather conditions, status updates, coordinate plotting, search/filter controls, CSV export and local image screening using a clearly labelled colour-pixel heuristic. It does not contain a trained ML model, live data feed, cloud backend or automatic emergency alert.
 
 ## Technology Used
-**Implemented:** Web Application (HTML, CSS, JavaScript).
+**Implemented:** Web Application (HTML, CSS, JavaScript), local browser storage, rule-based scoring, CSV export and a schematic coordinate plot.
 
 **Proposed extension:** Computer Vision, Machine Learning, GIS and Cloud Computing. These are planned technologies for the full system, not capabilities already implemented in the current demo.
 
@@ -30,7 +30,7 @@ ForestGuard is a web-based forest-fire observation and early-warning concept. It
 
 **Output:** An incident dashboard/map showing the image, location, timestamp and model score; human-verified incident status; notification to authorised responders through an approved channel.
 
-**Prototype clarification:** The current demo locally previews an uploaded image and runs a basic colour-pixel heuristic. It is not a trained classifier and cannot confirm or rule out fire. The report form stores entries only in the browser session and does not notify anyone.
+**Prototype clarification:** The current dashboard stores reports persistently in the browser's localStorage, calculates illustrative rule-based priority scores, allows status updates and CSV export, and plots supplied coordinates schematically. Image screening uses a basic colour-pixel heuristic, not a trained classifier; it cannot confirm or rule out fire. There is no shared server or notification service, so reports remain on the same browser/device and no authority is notified.
 
 ## Expected Environmental Benefits
 1. Faster identification and investigation of possible forest fires.
@@ -43,4 +43,4 @@ ForestGuard is a web-based forest-fire observation and early-warning concept. It
 https://github.com/abhishekpasupathy/evsassigment
 
 ## Demonstration
-Open `index.html` in a browser or use the GitHub Pages URL after enabling Pages in repository settings. The README contains local run instructions and a suggested demonstration sequence.
+Open `index.html` and launch `dashboard.html` in a browser, or use the GitHub Pages URL after enabling Pages in repository settings. Click **Load sample data**, demonstrate the queue and status updates, create a report, refresh to show local persistence, export CSV, and test the image screening panel. The README contains full run instructions.
