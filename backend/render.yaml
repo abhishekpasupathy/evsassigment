@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: forestguard-api
+    runtime: docker
+    rootDir: backend
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: MODEL_PATH
+        value: /app/models/best.pt
+      - key: ALLOWED_ORIGINS
+        value: "*"
