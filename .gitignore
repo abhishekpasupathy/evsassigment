@@ -1,5 +1,14 @@
 .DS_Store
-Thumbs.db
+__pycache__/
+*.py[cod]
+.venv/
+venv/
 .env
-node_modules/
-dist/
+*.db
+ml/data.yaml
+ml/datasets/
+datasets/
+ml/runs/
+*.pt
+*.onnx
+*.engine
