@@ -1,0 +1,9 @@
+# Copy to ml/data.yaml and update paths to your D-Fire YOLO dataset.
+# D-Fire class order must match the label IDs in the downloaded labels.
+path: ../datasets/DFire
+train: train/images
+val: valid/images
+test: test/images
+names:
+  0: smoke
+  1: fire
