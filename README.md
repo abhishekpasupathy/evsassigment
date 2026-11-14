@@ -70,12 +70,12 @@ Open [http://localhost:8000](http://localhost:8000), then launch the dashboard.
 | HTML5 | Page structure, form and semantic content |
 | CSS3 | Responsive interface and visual design |
 | JavaScript | Incident queue, local persistence, heuristic priority scoring, image pixel analysis, filters and CSV export |
-| Computer Vision (proposed) | Detect visible fire and smoke in submitted images using a trained model |
-| Machine Learning (proposed) | Train and validate a classifier/detector on labelled fire, smoke and normal-scene data |
+| Computer Vision (implemented pipeline; weights must be trained/supplied) | YOLO fire/smoke object detection, bounding boxes and confidence scores |
+| Machine Learning (training code included; training not yet run) | YOLO training, held-out evaluation and image prediction scripts |
 | GIS (proposed) | Plot reports, analyse location context and identify possible hotspots |
 | Cloud/backend (proposed) | Securely store reports and model results; distribute authorised alerts |
 
-For the assignment form, select **Web Application** as implemented. Select **Computer Vision**, **Machine Learning**, **GIS**, or **Cloud Computing** only when describing the proposed/extended system; these capabilities are not yet implemented in this static demo. Do not claim the current page uses a trained AI model.
+For the assignment form, select **Web Application** as implemented. You can describe Computer Vision and Machine Learning as an implemented training/inference pipeline, but do not claim a trained detector is already operational until a dataset has been prepared, training has completed, and the API reports that model weights are loaded. GIS and cloud deployment remain proposed/partial integrations.
 
 ## 4.2 Machine-learning model and API
 
