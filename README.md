@@ -77,6 +77,44 @@ Open [http://localhost:8000](http://localhost:8000), then launch the dashboard.
 
 For the assignment form, select **Web Application** as implemented. Select **Computer Vision**, **Machine Learning**, **GIS**, or **Cloud Computing** only when describing the proposed/extended system; these capabilities are not yet implemented in this static demo. Do not claim the current page uses a trained AI model.
 
+## 4.2 Machine-learning model and API
+
+ForestGuard now includes a YOLO-based fire/smoke object-detection training pipeline and a FastAPI inference service.
+
+**ML code:** `ml/train.py`, `ml/evaluate.py`, `ml/predict.py`  
+**Backend:** `backend/app/main.py`  
+**Dashboard integration:** The Image Screening panel sends the selected image to `POST /api/detect`. Set the API endpoint in the dashboard. The browser does not fabricate model predictions: if the API or trained checkpoint is unavailable, the interface reports that the service is unavailable.
+
+### Dataset and training
+
+Use the D-Fire dataset as a starting point. It contains more than 21,000 images with fire/smoke bounding-box annotations and a no-fire category. Download and review the dataset terms and original-source attributions from the [official D-Fire repository](https://github.com/gaia-solutions-on-demand/DFireDataset). Its public README describes the image counts, YOLO annotation format, download options and source-specific attribution requirements.
+
+1. Download and extract D-Fire locally. Do not commit dataset images or model weights.
+2. Install `ml/requirements.txt`.
+3. Copy `ml/data.yaml.example` to `ml/data.yaml`.
+4. Set the dataset paths and verify the numeric class-ID mapping against the actual downloaded labels before training.
+5. Train: `python ml/train.py --data ml/data.yaml --epochs 80 --imgsz 640 --batch 8`.
+6. Evaluate on the held-out test split: `python ml/evaluate.py --weights ml/runs/detect/forestguard/weights/best.pt --data ml/data.yaml`.
+7. Run local inference: `python ml/predict.py --source path/to/image.jpg --save`.
+
+The best checkpoint is written to `ml/runs/detect/forestguard/weights/best.pt`. The repository does not contain a trained checkpoint or dataset, so the ML endpoint will remain in model-not-loaded state until you train or supply weights.
+
+### Run the API
+
+```bash
+pip install -r backend/requirements.txt
+uvicorn backend.app.main:app --reload --port 8000
+```
+
+API docs: [http://localhost:8000/docs](http://localhost:8000/docs)  
+Health: [http://localhost:8000/health](http://localhost:8000/health)
+
+Set `MODEL_PATH` to the trained checkpoint. The default points to the ML training output. The API provides image detection and SQLite-backed incident CRUD/status endpoints. See `backend/README.md` and `ml/README.md` for deployment and detailed setup.
+
+**Deployment separation:** GitHub Pages can host the static frontend, but it cannot run FastAPI or PyTorch inference. Deploy the API separately to a Python/Docker host, configure the dashboard's API URL to that service, and provide the model weights through a private artifact or mounted volume. Restrict CORS to the real frontend origin for production.
+
+**Safety and evaluation:** YOLO confidence scores are not calibrated probabilities. Evaluate precision, recall, mAP50 and mAP50-95 on held-out data; inspect false negatives; and validate on local forest conditions. This is a research prototype, not an official alerting or emergency-response system.
+
 ## 5. Input data required and possible sources
 
 | Input | Required fields | Possible source |
