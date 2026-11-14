@@ -8,10 +8,10 @@
 Forest fires destroy trees, vegetation and wildlife habitats, reduce biodiversity, and create smoke and air pollution. They can release greenhouse gases and spread rapidly when they are not detected and reported early. In remote forest regions, timely observation and accurate location details can be difficult. A digital reporting and image-screening system can help bring possible incidents to the attention of authorised personnel sooner, allowing them to verify the situation and decide on an appropriate response.
 
 ## Proposed Digital Solution
-ForestGuard is a web-based forest-fire observation and early-warning concept. It accepts forest photographs and field incident reports containing the observation type, time and optional GPS coordinates. In the proposed full system, a computer-vision model trained on labelled fire, smoke and normal forest images analyses photographs. The result is combined with location, weather and satellite hotspot context to prioritise possible incidents in a dashboard for human verification. The repository contains an interactive browser prototype with an operations dashboard, persistent local incident queue, report creation, rule-based priority scores using incident type and manually entered weather conditions, status updates, coordinate plotting, search/filter controls, CSV export and local image screening using a clearly labelled colour-pixel heuristic. It does not contain a trained ML model, live data feed, cloud backend or automatic emergency alert.
+ForestGuard is a web-based forest-fire observation and early-warning concept. It accepts forest photographs and field incident reports containing the observation type, time and optional GPS coordinates. In the proposed full system, a computer-vision model trained on labelled fire, smoke and normal forest images analyses photographs. The result is combined with location, weather and satellite hotspot context to prioritise possible incidents in a dashboard for human verification. The repository contains an interactive browser dashboard, local incident queue, report creation, rule-based risk indicator, status updates, coordinate plotting, search/filter controls and CSV export. It also includes a YOLO fire/smoke object-detection training pipeline, evaluation and prediction scripts, a FastAPI inference endpoint and SQLite incident API. The dashboard can call the ML API for image inference. However, no dataset or trained checkpoint is committed; the model must be trained or supplied before real ML inference becomes available. There is no live satellite feed or automatic emergency alert.
 
 ## Technology Used
-**Implemented:** Web Application (HTML, CSS, JavaScript), local browser storage, rule-based scoring, CSV export and a schematic coordinate plot.
+**Implemented:** Web Application (HTML, CSS, JavaScript), local browser storage, rule-based scoring, CSV export, schematic coordinate plot, YOLO training/evaluation/inference code and FastAPI backend. Model weights are not included.
 
 **Proposed extension:** Computer Vision, Machine Learning, GIS and Cloud Computing. These are planned technologies for the full system, not capabilities already implemented in the current demo.
 
@@ -30,7 +30,7 @@ ForestGuard is a web-based forest-fire observation and early-warning concept. It
 
 **Output:** An incident dashboard/map showing the image, location, timestamp and model score; human-verified incident status; notification to authorised responders through an approved channel.
 
-**Prototype clarification:** The current dashboard stores reports persistently in the browser's localStorage, calculates illustrative rule-based priority scores, allows status updates and CSV export, and plots supplied coordinates schematically. Image screening uses a basic colour-pixel heuristic, not a trained classifier; it cannot confirm or rule out fire. There is no shared server or notification service, so reports remain on the same browser/device and no authority is notified.
+**Prototype clarification:** The dashboard stores browser reports locally and provides queue management. The repository includes a YOLO model-training pipeline and FastAPI image-inference API, but the trained model weights and training dataset are not included. Until a dataset is downloaded and the model is trained, the ML endpoint will report that weights are unavailable. The API also provides SQLite-backed incident endpoints, but the static dashboard's report queue remains local. There is no official alerting or emergency dispatch.
 
 ## Expected Environmental Benefits
 1. Faster identification and investigation of possible forest fires.
@@ -43,4 +43,4 @@ ForestGuard is a web-based forest-fire observation and early-warning concept. It
 https://github.com/abhishekpasupathy/evsassigment
 
 ## Demonstration
-Open `index.html` and launch `dashboard.html` in a browser, or use the GitHub Pages URL after enabling Pages in repository settings. Click **Load sample data**, demonstrate the queue and status updates, create a report, refresh to show local persistence, export CSV, and test the image screening panel. The README contains full run instructions.
+Open `index.html` and launch `dashboard.html` in a browser. Click **Load sample data**, demonstrate the queue and status updates, create a report, refresh to show local persistence, and export CSV. To demonstrate ML, download D-Fire, configure `ml/data.yaml`, train the YOLO model, start FastAPI, and set the API endpoint in the dashboard. The README and `ml/README.md` contain full setup instructions.
