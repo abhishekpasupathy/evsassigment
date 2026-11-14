@@ -101,8 +101,8 @@ async def detect(file: UploadFile = File(...), confidence: float = Form(0.25)):
     if not content or len(content) > MAX_IMAGE_BYTES:
         raise HTTPException(status_code=413, detail="Image is empty or exceeds the 12 MB limit.")
     try:
-        image = Image.open(io.BytesIO(content)).convert("RGB")
-        image.verify()
+        probe = Image.open(io.BytesIO(content))
+        probe.verify()
         image = Image.open(io.BytesIO(content)).convert("RGB")
     except (UnidentifiedImageError, OSError):
         raise HTTPException(status_code=400, detail="The uploaded file is not a valid image.")
